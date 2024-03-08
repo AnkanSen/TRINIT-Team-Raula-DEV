@@ -1,54 +1,413 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Log in | eLMS</title>
-      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
-      <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
-      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
-      <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
-      <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
-      <link rel="stylesheet" href="{% static 'styles/style.css' %}">
-      <link rel="stylesheet" href="{% static 'styles/style-login.css' %}">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-   </head>
-   <body>
-      <div class="main">
-         <section class="sign-in">
-            <div class="container">
-               <div class="signin-content">
-                  <div class="signin-image">
-                     <figure><img src="{% static 'images/login-bg.jpg' %}" alt="sing up image"></figure>
-                  </div>
-                  <div class="signin-form">
-                     <h2 class="form-title">Sign in to Faculty</h2>
-                     <form method="POST" action="register_faculty" class="register-form" id="login-form">
-                           {% csrf_token %}
-                           <div class="form-group">
-                            <label for="username"><span class="material-symbols-outlined" style="vertical-align:text-bottom">person</span></label>
-                            <input type="number" name="username"></input>
-                         </div>
-                           <div class="form-group">
-                              <label for="name"><span class="material-symbols-outlined" style="vertical-align:text-bottom">person</span></label>
-                              <input type="text" name="name"></input>
-                           </div>
-                           <div class="form-group">
-                              <label for="password"><span class="material-symbols-outlined" style="vertical-align:text-bottom">lock</span></label>
-                              <input type="text" name="password"></input>
-                           </div>
-                           <div class="form-group">
-                            <label for="email"><span class="material-symbols-outlined" style="vertical-align:text-bottom">email</span></label>
-                            <input type="email" name="email"></input>
-                         </div>
-                           <div class="d-grid">
-                              <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Register</button>
-                           </div>
-                     </form>
-                     <div class="d-flex justify-content-around flex-wrap">
-                        <!-- <div class="">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Log in | eLMS</title>
+   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
+   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
+   <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
+   <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
+   <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
+   <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+   <link rel="stylesheet" href="{% static 'styles/style-login.css' %}">
+   <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+</head>
+
+<style>
+   @font-face {
+      font-family: "Poppins-Regular";
+      src: url("../fonts/poppins/Poppins-Regular.ttf");
+   }
+
+   @font-face {
+      font-family: "Poppins-SemiBold";
+      src: url("../fonts/poppins/Poppins-SemiBold.ttf");
+   }
+
+   * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+   }
+
+   body {
+      font-family: "Poppins-Regular";
+      color: #333;
+      font-size: 13px;
+      margin: 0;
+   }
+
+   input,
+   textarea,
+   select,
+   button {
+      font-family: "Poppins-Regular";
+      color: #333;
+      font-size: 13px;
+   }
+
+   p,
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   h6,
+   ul {
+      margin: 0;
+   }
+
+   img {
+      max-width: 100%;
+   }
+
+   ul {
+      padding-left: 0;
+      margin-bottom: 0;
+   }
+
+   a:hover {
+      text-decoration: none;
+   }
+
+   :focus {
+      outline: none;
+   }
+
+   .wrapper {
+      min-height: 100vh;
+      background-size: cover;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+   }
+
+   .inner {
+      padding: 20px;
+      background: #fff;
+      max-width: 850px;
+      margin: auto;
+      display: flex;
+   }
+
+   .inner .image-holder {
+      width: 50%;
+   }
+
+   .inner form {
+      width: 50%;
+      padding-top: 36px;
+      padding-left: 45px;
+      padding-right: 45px;
+   }
+
+   .inner h3 {
+      text-transform: uppercase;
+      font-size: 25px;
+      font-family: "Poppins-SemiBold";
+      text-align: center;
+      margin-bottom: 28px;
+   }
+
+   .form-group {
+      display: flex;
+   }
+
+   .form-group input {
+      width: 50%;
+   }
+
+   .form-group input:first-child {
+      margin-right: 25px;
+   }
+
+   .form-wrapper {
+      position: relative;
+   }
+
+   .form-wrapper i {
+      position: absolute;
+      bottom: 9px;
+      right: 0;
+   }
+
+   .form-control {
+      border: 1px solid #333;
+      border-top: none;
+      border-right: none;
+      border-left: none;
+      display: block;
+      width: 100%;
+      height: 30px;
+      padding: 0;
+      margin-bottom: 25px;
+   }
+
+   .form-control::-webkit-input-placeholder {
+      font-size: 13px;
+      color: #333;
+      font-family: "Poppins-Regular";
+   }
+
+   .form-control::-moz-placeholder {
+      font-size: 13px;
+      color: #333;
+      font-family: "Poppins-Regular";
+   }
+
+   .form-control:-ms-input-placeholder {
+      font-size: 13px;
+      color: #333;
+      font-family: "Poppins-Regular";
+   }
+
+   .form-control:-moz-placeholder {
+      font-size: 13px;
+      color: #333;
+      font-family: "Poppins-Regular";
+   }
+
+   select {
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      padding-left: 20px;
+   }
+
+   select option[value=""][disabled] {
+      display: none;
+   }
+
+   button {
+      border: none;
+      width: 164px;
+      height: 51px;
+      margin: auto;
+      margin-top: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: #333;
+      font-size: 15px;
+      color: #fff;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+   }
+
+   button i {
+      margin-left: 10px;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+   }
+
+   button:hover i,
+   button:focus i,
+   button:active i {
+      -webkit-animation-name: hvr-icon-wobble-horizontal;
+      animation-name: hvr-icon-wobble-horizontal;
+      -webkit-animation-duration: 1s;
+      animation-duration: 1s;
+      -webkit-animation-timing-function: ease-in-out;
+      animation-timing-function: ease-in-out;
+      -webkit-animation-iteration-count: 1;
+      animation-iteration-count: 1;
+   }
+
+   @-webkit-keyframes hvr-icon-wobble-horizontal {
+      16.65% {
+         -webkit-transform: translateX(6px);
+         transform: translateX(6px);
+      }
+
+      33.3% {
+         -webkit-transform: translateX(-5px);
+         transform: translateX(-5px);
+      }
+
+      49.95% {
+         -webkit-transform: translateX(4px);
+         transform: translateX(4px);
+      }
+
+      66.6% {
+         -webkit-transform: translateX(-2px);
+         transform: translateX(-2px);
+      }
+
+      83.25% {
+         -webkit-transform: translateX(1px);
+         transform: translateX(1px);
+      }
+
+      100% {
+         -webkit-transform: translateX(0);
+         transform: translateX(0);
+      }
+   }
+
+   @keyframes hvr-icon-wobble-horizontal {
+      16.65% {
+         -webkit-transform: translateX(6px);
+         transform: translateX(6px);
+      }
+
+      33.3% {
+         -webkit-transform: translateX(-5px);
+         transform: translateX(-5px);
+      }
+
+      49.95% {
+         -webkit-transform: translateX(4px);
+         transform: translateX(4px);
+      }
+
+      66.6% {
+         -webkit-transform: translateX(-2px);
+         transform: translateX(-2px);
+      }
+
+      83.25% {
+         -webkit-transform: translateX(1px);
+         transform: translateX(1px);
+      }
+
+      100% {
+         -webkit-transform: translateX(0);
+         transform: translateX(0);
+      }
+   }
+
+   @media (max-width: 1199px) {
+      .wrapper {
+         background-position: right center;
+      }
+   }
+
+   @media (max-width: 991px) {
+      .inner form {
+         padding-top: 10px;
+         padding-left: 30px;
+         padding-right: 30px;
+      }
+   }
+
+   @media (max-width: 767px) {
+      .inner {
+         display: block;
+      }
+
+      .inner .image-holder {
+         width: 100%;
+      }
+
+      .inner form {
+         width: 100%;
+         padding: 40px 0 30px;
+      }
+
+      button {
+         margin-top: 60px;
+      }
+   }
+
+   /*# sourceMappingURL=style.css.map */
+</style>
+
+
+
+<body>
+   <div class="wrapper" style="background-image: url('images/bg-registration-form-1.jpg');">
+      <div class="inner">
+         <div class="image-holder">
+            <img src={% static 'images\registration-form-1.jpg' %} alt="">
+         </div>
+         <form method="POST" action="register_faculty" class="register-form" id="login-form">
+            {% csrf_token %}
+
+            <h3>Tutor Registration Form</h3>
+            <div class="form-wrapper">
+               <input name="name" type="text" placeholder="Name" class="form-control">
+            </div>
+            <div class="form-wrapper">
+               <input name="username" type="number" placeholder="Username" class="form-control">
+               <i class="zmdi zmdi-account"></i>
+            </div>
+            <div class="form-wrapper">
+               <input name="email" type="text" placeholder="Email Address" class="form-control">
+               <i class="zmdi zmdi-email"></i>
+            </div>
+            <div class="form-wrapper">
+               <select name="department" id="" class="form-control">
+                  <option value="" disabled selected>Landuage you will teach</option>
+                  {% for i in department %}
+                  <option value={{i.department_id}}>{{i.name}} - {{i.department_id}}</option>
+                  {% endfor %}
+               </select>
+               <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
+            </div>
+            <div class="form-wrapper">
+               <input name="password" type="password" placeholder="Password" class="form-control">
+               <i class="zmdi zmdi-lock"></i>
+            </div>
+            <button type="submit">Register
+               <i class="zmdi zmdi-arrow-right"></i>
+            </button>
+         </form>
+      </div>
+   </div>
+   <!-- <div class="main">
+      <section class="sign-in">
+         <div class="container">
+            <div class="signin-content">
+               <div class="signin-image">
+                  <figure><img src="{% static 'images/login-bg.jpg' %}" alt="sing up image"></figure>
+               </div>
+               <div class="signin-form">
+                  <h2 class="form-title">Sign in to Faculty</h2>
+                  <form method="POST" action="register_faculty" class="register-form" id="login-form">
+                     {% csrf_token %}
+                     <div class="form-group">
+                        <label for="username"><span class="material-symbols-outlined"
+                              style="vertical-align:text-bottom">person</span></label>
+                        <input type="number" name="username"></input>
+                     </div>
+                     <div class="form-group">
+                        <label for="name"><span class="material-symbols-outlined"
+                              style="vertical-align:text-bottom">person</span></label>
+                        <input type="text" name="name"></input>
+                     </div>
+                     <div class="form-group">
+                        <label for="password"><span class="material-symbols-outlined"
+                              style="vertical-align:text-bottom">lock</span></label>
+                        <input type="text" name="password"></input>
+                     </div>
+                     <div class="form-group">
+                        <label for="email"><span class="material-symbols-outlined"
+                              style="vertical-align:text-bottom">email</span></label>
+                        <input type="email" name="email"></input>
+                     </div>
+                     <select name="department">
+                        {% for i in department %}
+                        <option value={{i.department_id}}>{{i.name}} {{i.department_id}}</option>
+                        {% endfor %}
+                     </select>
+                     <div class="d-grid">
+                        <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
+                           type="submit">Register</button>
+                     </div>
+                  </form>
+                  <div class="d-flex justify-content-around flex-wrap">
+                     <!-- <div class="">
                            <div class="dropdown">
                               <a class="dropdown-toggle" id="dropdownMenuButton1"
                                  data-bs-toggle="dropdown" aria-expanded="false" role="button">
@@ -60,26 +419,27 @@
                               </ul>
                            </div>
                         </div> -->
-                     </div>
-                     {% if error_messages %}
-                     <!-- Error Alert -->
-                     <div class="alert alert-danger alert-dismissible fade show my-2">
-                        {% for message in error_messages %}
-                        {{ message }}
-                        {% endfor %}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                     </div>
-                     {% endif %}
+                  <!-- </div> -->
+                  {% if error_messages %}
+                  <!-- Error Alert -->
+                  <div class="alert alert-danger alert-dismissible fade show my-2">
+                     {% for message in error_messages %}
+                     {{ message }}
+                     {% endfor %}
+                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                   </div>
+                  {% endif %}
                </div>
             </div>
-         </section>
-      </div>
-      <script src=" {% static 'js/bootstrap.bundle.min.js' %} "></script>
-      <script>
-         if (window.history.replaceState) {
-             window.history.replaceState(null, null, window.location.href);
-         }     
-      </script>
-   </body>
+         </div>
+      </section>
+   </div>
+   <script src=" {% static 'js/bootstrap.bundle.min.js' %} "></script>
+   <script>
+      if (window.history.replaceState) {
+         window.history.replaceState(null, null, window.location.href);
+      }     
+   </script>
+</body>
+
 </html>

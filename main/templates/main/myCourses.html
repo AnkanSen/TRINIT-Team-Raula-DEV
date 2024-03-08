@@ -13,6 +13,47 @@
 {% url 'myCourses' %}
 {% endblock %}
 {% block content %}
+
+<style>
+   .pricing {
+      padding: 0px 0;
+      font-family: 'Roboto', sans-serif;
+      letter-spacing: 0.3px;
+
+      .package.brilliant {
+         background: #7AB97A;
+      }
+
+      .package {
+         height: 400px;
+         text-align: center;
+         border: 2px solid #6A8347;
+         background: #028381;
+         color: #fff;
+         min-width: 400px;
+      }
+
+      .name {
+         font-size: 24px;
+         margin-top: 20px;
+         font-weight: 600;
+      }
+
+      .price {
+         margin-top: 10px;
+         font-size: 18px;
+         background: #ccc;
+         display: inline-block;
+         padding: 17px 20px;
+         border-radius: 50%;
+         color: #6A8347;
+      }
+
+      .scheme {
+         margin-top: 5px;
+      }
+   }
+</style>
 <div>
    <!--navigation links-->
    <div class="container">
@@ -23,36 +64,40 @@
             </ol>
          </nav>
       </div>
-      {% if courses %}
-      <!-- Course container -->
-      <div class="card_primary d-flex justify-content-center flex-wrap">
-         {% for courses in courses %}
-         <!-- individual course starts -->
-         <div class="cd card text-center my-4 mx-4" style="width: 30rem !important;">
-            <div class="card-header text-light fw-bold">
-               Dept. of {{courses.department}}
-            </div>
-            <div class="card-body">
-               <h5 class="card-title fw-bold"> {{courses.department}}-{{courses.code}} : {{courses.name}}</h5>
-               <a href="{% url 'course' courses.code %}" class="btn btn-outline-dark px-5">Enter</a>
-            </div>
-            <div class="card-footer text-light fw-bold">
-               {% if courses.faculty %}
-               Course Teacher : {{ courses.faculty.name}}
+      <div class="row gy-5">
+         {% if courses %}
+   
+         <div style="display: flex;justify-self: calc()">
+            {% for course in courses%}
+            <!-- individual card starts -->
+            <div class="pricing">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-sm-4 col-sm-offset-2">
+                        <div class='package'>
+                           <div class='name'>Dept. of {{course.department}}</div>
+                           <div class='price'>${{course.studentKey}}</div>
+                           <div class="scheme">/ month / student</div>
+                           <hr>
+                           <p> Course Name :- {{course.name}}
+                           </p>
+                           <p> Faculty Name :- {{course.faculty}}
+                           </p>
+                           <p> Timing :- {{course.facultyKey}}
+                           </p>
+                           <a href="{% url 'course' course.code %}" class="btn btn-outline-dark"><span
+                              class="px-3">Enter</span></a>
+                        </div>
+                     </div>
+                     </div>
+                     </div>
+                     </div>
+                     <!-- individual card ends -->
+                     {% endfor %}
+                  </div>
+               </div>
                {% else %}
-               Teacher not assigned yet
+               <div class="text-center h4 text-secondary">No courses to show</div>
                {% endif %}
             </div>
-         </div>
-         <!-- individual course ends -->
-         {% endfor %}
-         <!-- Course container ends -->
-      </div>
-      {% else %}
-      <div class="text-center fs-5 text-secondary">
-         <p>You are not enrolled in any courses</p>
-      </div>
-      {% endif %}
-   </div>
-</div>
-{% endblock %}
+            {% endblock %}

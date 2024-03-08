@@ -14,8 +14,6 @@ class Student(models.Model):
         'Course', related_name='students', blank=True)
     photo = models.ImageField(upload_to='profile_pics', blank=True,
                               null=False, default='profile_pics/default_student.png')
-    department = models.ForeignKey(
-        'Department', on_delete=models.CASCADE, null=False, blank=False, related_name='students')
 
     def delete(self, *args, **kwargs):
         if self.photo != 'profile_pics/default_student.png':

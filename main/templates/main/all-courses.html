@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block title %} Courses | eLMS {% endblock title %}
 {% block profile %}
-{% if faculty  %} {% url 'profile' faculty.faculty_id %}
+{% if faculty %} {% url 'profile' faculty.faculty_id %}
 {% else %} {% url 'profile' student.student_id %}
 {% endif %}
 {% endblock %}
@@ -17,49 +17,110 @@
 {% url 'courses' %}
 {% endblock %}
 {% block content %}
+<style>
+   .pricing {
+      padding: 0px 0;
+      font-family: 'Roboto', sans-serif;
+      letter-spacing: 0.3px;
+
+      .package.brilliant {
+         background: #7AB97A;
+      }
+
+      .package {
+         height: 400px;
+         text-align: center;
+         border: 2px solid #6A8347;
+         background: #028381;
+         color: #fff;
+         min-width: 400px;
+      }
+
+      .name {
+         font-size: 24px;
+         margin-top: 20px;
+         font-weight: 600;
+      }
+
+      .price {
+         margin-top: 10px;
+         font-size: 18px;
+         background: #ccc;
+         display: inline-block;
+         padding: 17px 20px;
+         border-radius: 50%;
+         color: #6A8347;
+      }
+
+      .scheme {
+         margin-top: 5px;
+      }
+   }
+</style>
 <div class="container">
    <!-- navigation links -->
    <div class="container shadow-sm">
-      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+      <nav
+         style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+         aria-label="breadcrumb">
          <ol class="breadcrumb p-3">
-            <li class="breadcrumb-item active animate__animated animate__backInRight" aria-current="page">All courses</li>
+            <li class="breadcrumb-item active animate__animated animate__backInRight" aria-current="page">All courses
+            </li>
          </ol>
       </nav>
    </div>
    <!-- navigation links end -->
    <div class="row gy-5">
+      <form action="" method="POST">
+         {% csrf_token %}
+         <select name="dept" id="">
+            {% for dep in department %}
+            <option value={{dep.department_id}}>{{dep}}</option>
+            {% endfor %}
+         </select>
+         <button type="submit">Search</button>
+      </form>
       {% if courses %}
-      {% for course in courses%}
-      <!-- individual card starts -->
-      <div class="col-sm-6 d-flex align-items-stretch justify-content-center animate__animated animate__zoomIn">
-         <div class="card shadow" style="width: 30rem !important;">
-            <div class="class-header text-center text-light border-bottom bg-dark rounded">
-               <h6 class="my-2"> Dept. of {{course.department}}</h6>
+
+      <div style="display: flex;justify-self: calc()">
+         {% for course in courses%}
+         <!-- individual card starts -->
+         <div class="pricing">
+            <div class="container">
+               <div class="row">
+                  <div class="col-sm-4 col-sm-offset-2">
+                     <div class='package'>
+                        <div class='name'>Dept. of {{course.department}}</div>
+                        <div class='price'>${{course.studentKey}}</div>
+                        <div class="scheme">/ month / student</div>
+                        <hr>
+                        <p> Course Name :- {{course.name}}
+                        </p>
+                        <p> Faculty Name :- {{course.faculty}}
+                        </p>
+                        <p> Timing :- {{course.facultyKey}}
+                        </p>
+                        {% if not faculty %}
+                        {% comment %} if student {% endcomment %}
+                        {% if course not in enrolled%}
+                        <a href="{% url 'access' course.code %}" class="btn btn-outline-dark"><span
+                              class="px-2">Access</span></a>
+                        {% else %}
+                        <a href="{% url 'course' course.code %}" class="btn btn-outline-dark"><span
+                              class="px-3">Enter</span></a>
+                        {% endif %}
+                        {% endif %}
+                     </div>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  <!-- individual card ends -->
+                  {% endfor %}
+               </div>
             </div>
-            <div class="card-body d-flex flex-column align-items-center">
-               <h5 class="card-title fw-bold">{{course.department}}-{{course.code}} : {{course.name}}</h5>
-               {% if course.faculty %}
-               <p class="card-text fw-bold">Course Teacher : {{ course.faculty.name}}</p>
-               {% else %}
-               <p> Teacher not assigned</p>
-               {% endif %}
-               {% if not faculty %}
-               {% comment %} if student {% endcomment %}
-               {% if course not in enrolled%}
-               <a href="{% url 'access' course.code %}" class="btn btn-outline-dark"><span class="px-2">Access</span></a>
-               {% else %}
-               <a href="{% url 'course' course.code %}" class="btn btn-outline-dark"><span
-                  class="px-3">Enter</span></a>
-               {% endif %}
-               {% endif %}
-            </div>
+            {% else %}
+            <div class="text-center h4 text-secondary">No courses to show</div>
+            {% endif %}
          </div>
-      </div>
-      <!-- individual card ends -->
-      {% endfor %}
-   </div>
-   {% else %}
-   <div class="text-center h4 text-secondary">No courses to show</div>
-   {% endif %}
-</div>
-{% endblock  %}
+         {% endblock %}
