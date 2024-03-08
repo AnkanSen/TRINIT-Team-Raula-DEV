@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block title %}Dashboard | eLMS {% endblock title %}
+{% block user %}
+{{faculty.name}}
+{% endblock user %}
+{% block courses %}
+{% url 'facultyCourses' %}
+{% endblock courses %}
+{% block allCourses %}
+{% url 'courses' %}
+{% endblock %}
+{% block content %}
+<form action="add_courses" method="POST">
+    {% csrf_token %}
+    <label for="code">Code</label>
+    <input type="number" name="code"/>
+
+    <label for="name">Name</label>
+    <input type="text" name="name"/>
+
+    <label for="price">Price</label>
+    <input type="number" name="price"/>
+
+    <label for="time">Time</label>
+    <input type="text" name="time"/>
+
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
