@@ -44,8 +44,8 @@ def register_student(requests):
         name=requests.POST['name']
         password=requests.POST.get('password','')
         email=requests.POST['email']
-        department=models.Department.objects.get(department_id=0)
-        student=models.Student.objects.create(student_id=username,name=name,password=password,email=email,department=department)
+        # department=models.Department.objects.get(department_id=0)
+        student=models.Student.objects.create(student_id=username,name=name,password=password,email=email)
         student.save()
         return redirect('/login')
     return render(requests,'register_student.html')
