@@ -13,18 +13,28 @@
 {% url 'courses' %}
 {% endblock %}
 {% block content %}
+
+<style>
+   .add_course_button:hover{
+      background-color: white;
+   }
+   .add_course_a :hover{
+      color: black;
+   }
+</style>
+
 <div>
    <!-- navigation links -->
-   <div class="container shadow-sm">
+   <div style="display: flex; justify-content: space-between; background-color: rgb(255, 255, 255);align-items: center;" class="container shadow-sm">
       <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
          <ol class="breadcrumb p-3">
             <li class="breadcrumb-item fw-bold"><a class="breadcrumb-item active" aria-current="page">My Courses</a>
             </li>
          </ol>
       </nav>
-   </div>
-   <div class="">
-      <a href="/add_courses" target="_blank">Add Courses</a>
+      <button class="add_course_button" style="border: none;width: 7rem;height: 2.5rem; border-radius: 10px;background-color:#0f172a;">
+         <a href="/add_courses" class="add_course_a" style="color: white;">Add Courses</a>
+      </button>
    </div>
    <!-- navigation links end -->
    <div class="container">
