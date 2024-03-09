@@ -25,8 +25,36 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 
-def home(requests):
-    return render(requests, 'home.html')
+def home(request):
+    course = models.Course.objects.all()
+    if request.session.get('student_id'):
+        student = Student.objects.get(
+            student_id=request.session['student_id'])
+        course = models.Course.objects.all()
+        oneonone=models.BookedClasses.objects.filter(student=student)
+      
+    else:
+        student = None
+    if request.session.get('faculty_id'):
+        faculty = Faculty.objects.get(
+            faculty_id=request.session['faculty_id'])
+    else:
+        faculty = None
+
+    enrolled = student.course.all() if student else None
+    accessed = Course.objects.filter(
+        faculty_id=faculty.faculty_id) if faculty else None
+
+    context = {
+        'faculty': faculty,
+        'courses': course,
+        'student': student,
+        'enrolled': enrolled,
+        'accessed': accessed,
+        
+    }
+
+    return render(request, 'main/index2.html', context)
 
 
 def is_student_authorised(request, code):
@@ -87,7 +115,7 @@ def connect(request,code):
     msg['subject'] = 'Join the meet '+str(curr.day)+"-"+str(curr.year)
     msg['From'] = FROM
     msg['To'] = TO
-    co=f"Join the meet using this link. https:127.0.0.1:8000/connect/{code}2341"
+    co=f"Join the meet using this link. https:127.0.0.1:8000/connect/{code}"
     msg.attach(MIMEText(co, 'html'))
     print("Creating mail")
     server = SMTP(SERVER, PORT)
@@ -97,9 +125,8 @@ def connect(request,code):
     server.login(FROM, PASS)
     server.sendmail(FROM, TO, msg.as_string())
     print('Sending Email')
-    server.quit()9
+    server.quit()
     print('Email sent ......')
-
     return render(request,"main/index.html")
 def book_class(requests):
     context = {
