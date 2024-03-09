@@ -20,7 +20,7 @@ class LoginForm(forms.Form):
 
 
 def home(requests):
-    return render(requests,'home.html')
+    return render(requests, 'home.html')
 
 
 def is_student_authorised(request, code):
@@ -36,60 +36,66 @@ def is_faculty_authorised(request, code):
         return True
     else:
         return False
-    
+
 
 def register_student(requests):
-    if requests.method=='POST':
-        username=requests.POST['username']
-        name=requests.POST['name']
-        password=requests.POST.get('password','')
-        email=requests.POST['email']
+    if requests.method == 'POST':
+        username = requests.POST['username']
+        name = requests.POST['name']
+        password = requests.POST.get('password', '')
+        email = requests.POST['email']
         # department=models.Department.objects.get(department_id=0)
-        student=models.Student.objects.create(student_id=username,name=name,password=password,email=email)
+        student = models.Student.objects.create(
+            student_id=username, name=name, password=password, email=email)
         student.save()
         return redirect('/login')
-    return render(requests,'register_student.html')
+    return render(requests, 'register_student.html')
 
 
 def create_class(requests):
-    return render(requests,'main/create_class.html')
+    return render(requests, 'main/create_class.html')
+
 
 def book_class(requests):
-    context={
-        'student':None,
-        'faculty':None
+    context = {
+        'student': None,
+        'faculty': None
     }
     if 'student_id' in requests.session:
-        student=models.Student.objects.get(student_id=requests.session['student_id'])
-        faculty=None
-        context={
-            'student':student,
-            'faculty':faculty
+        student = models.Student.objects.get(
+            student_id=requests.session['student_id'])
+        faculty = None
+        context = {
+            'student': student,
+            'faculty': faculty
         }
     if 'faculty_id' in requests.session:
-        facultys=models.Faculty.objects.get(faculty_id=requests.session['faculty_id'])
-        students=None
-        context={
-            'student':students,
-            'faculty':facultys
+        facultys = models.Faculty.objects.get(
+            faculty_id=requests.session['faculty_id'])
+        students = None
+        context = {
+            'student': students,
+            'faculty': facultys
         }
-        return render(requests,'main/book_class.html',context)
-    return render(requests,'main/book_class.html',context)
+        return render(requests, 'main/book_class.html', context)
+    return render(requests, 'main/book_class.html', context)
+
 
 def register_faculty(requests):
-    department=models.Department.objects.all()
-    if requests.method=='POST':
-        username=requests.POST['username']
-        name=requests.POST['name']
-        password=requests.POST.get('password','')
-        email=requests.POST['email']
-        departments=requests.POST.get('department','')
+    department = models.Department.objects.all()
+    if requests.method == 'POST':
+        username = requests.POST['username']
+        name = requests.POST['name']
+        password = requests.POST.get('password', '')
+        email = requests.POST['email']
+        departments = requests.POST.get('department', '')
         print(departments)
-        sdep=models.Department.objects.get(department_id=departments)
-        faculty=models.Faculty.objects.create(faculty_id=username,name=name,password=password,email=email,department=sdep)
+        sdep = models.Department.objects.get(department_id=departments)
+        faculty = models.Faculty.objects.create(
+            faculty_id=username, name=name, password=password, email=email, department=sdep)
         faculty.save()
         return redirect('/login')
-    return render(requests,'register_faculty.html',{'department':department})
+    return render(requests, 'register_faculty.html', {'department': department})
 
 
 # Custom Login page for both student and faculty
@@ -124,6 +130,7 @@ def std_login(request):
     context = {'form': form, 'error_messages': error_messages}
     return render(request, 'login_page.html', context)
 
+
 def login_student(request):
     error_messages = []
 
@@ -154,6 +161,7 @@ def login_student(request):
 
     context = {'form': form, 'error_messages': error_messages}
     return render(request, 'login_student.html', context)
+
 
 def login_faculty(request):
     error_messages = []
@@ -194,62 +202,58 @@ def std_logout(request):
 # Display all courses (student view)
 def myCourses(request):
     # try:
-        if request.session.get('student_id'):
-            student = Student.objects.get(
-                student_id=request.session['student_id'])
-            courses = student.course.all()
-            faculty = student.course.all().values_list('faculty_id', flat=True)
-            departments=models.Department.objects.all()
-            context = {
-                'courses': courses,
-                'student': student,
-                'faculty': faculty,
-                'department':departments
-            }
+    if request.session.get('student_id'):
+        student = Student.objects.get(
+            student_id=request.session['student_id'])
+        courses = student.course.all()
+        faculty = student.course.all().values_list('faculty_id', flat=True)
+        departments = models.Department.objects.all()
+        context = {
+            'courses': courses,
+            'student': student,
+            'faculty': faculty,
+            'department': departments
+        }
 
-            return render(request, 'main/myCourses.html', context)
-        else:
-            return redirect('std_login')
+        return render(request, 'main/myCourses.html', context)
+    else:
+        return redirect('std_login')
     # except:
-        return render(request, 'error.html')
+    return render(request, 'error.html')
 
 
-# Display all courses (faculty view)
 def facultyCourses(request):
-    try:
-        if request.session['faculty_id']:
-            faculty = Faculty.objects.get(
-                faculty_id=request.session['faculty_id'])
-            courses = Course.objects.filter(
-                faculty_id=request.session['faculty_id'])
-            # Student count of each course to show on the faculty page
-            studentCount = Course.objects.all().annotate(student_count=Count('students'))
 
-            studentCountDict = {}
+    if request.session['faculty_id']:
+        faculty = Faculty.objects.get(faculty_id=request.session['faculty_id'])
+        courses = Course.objects.filter(
+            faculty_id=request.session['faculty_id'])
+        # Student count of each course to show on the faculty page
+        studentCount = Course.objects.all().annotate(student_count=Count('students'))
 
-            for course in studentCount:
-                studentCountDict[course.code] = course.student_count
+        studentCountDict = {}
 
-            @register.filter
-            def get_item(dictionary, course_code):
-                return dictionary.get(course_code)
+        for course in studentCount:
+            studentCountDict[course.code] = course.student_count
 
-            context = {
-                'courses': courses,
-                'faculty': faculty,
-                'studentCount': studentCountDict
-            }
+        @register.filter
+        def get_item(dictionary, course_code):
+            return dictionary.get(course_code)
 
-            return render(request, 'main/facultyCourses.html', context)
+        context = {
+            'courses': courses,
+            'faculty': faculty,
+            'studentCount': studentCountDict
+        }
 
-        else:
-            return redirect('std_login')
-    except:
+        return render(request, 'main/facultyCourses.html', context)
 
+    else:
         return redirect('std_login')
 
-
 # Particular course page (student view)
+
+
 def course_page(request, code):
     try:
         course = Course.objects.get(code=code)
@@ -280,22 +284,36 @@ def course_page(request, code):
     except:
         return render(request, 'error.html')
 
+
 def add_courses(requests):
     if requests.session.get('faculty_id'):
         try:
-            if requests.method=='POST':
-                code=requests.POST['code']
-                name=requests.POST['name']
-                price=requests.POST['price']
-                time=requests.POST['time']
-                faculty=models.Faculty.objects.get(faculty_id=requests.session.get('faculty_id'))
-                couse=models.Course.objects.create(code=code,name=name,department=faculty.department,faculty=faculty,studentKey=price,facultyKey=time)
+            if requests.method == 'POST':
+                code = requests.POST['code']
+                name = requests.POST['name']
+                price = requests.POST['price']
+                time = requests.POST['time']
+                faculty = models.Faculty.objects.get(
+                    faculty_id=requests.session.get('faculty_id'))
+                couse = models.Course.objects.create(
+                    code=code, name=name, department=faculty.department, faculty=faculty, studentKey=price, facultyKey=time)
                 couse.save()
         except:
             return render(requests, 'error.html')
-    return render(requests,'main/add_courses.html')
+    return render(requests, 'main/add_courses.html')
 
 # Particular course page (faculty view)
+
+
+def videochat(request, code):
+    name = request.user.username
+    return render(request, "main/mumble2/room.html", {"code": code, "name": name})
+
+
+def videoochat(request):
+    return render(request, "main/mumble2/lobby.html")
+
+
 def course_page_faculty(request, code):
     course = Course.objects.get(code=code)
     if request.session.get('faculty_id'):
@@ -630,9 +648,10 @@ def deleteCourseMaterial(request, code, id):
 
 def courses(request):
     if request.session.get('student_id') or request.session.get('faculty_id'):
-        departments=models.Department.objects.all()
+        departments = models.Department.objects.all()
         if request.session.get('faculty_id'):
-            faculty=models.Faculty.objects.get(faculty_id=request.session.get('faculty_id'))
+            faculty = models.Faculty.objects.get(
+                faculty_id=request.session.get('faculty_id'))
             courses = Course.objects.filter(department=faculty.department)
         else:
             courses = Course.objects.all()
@@ -650,15 +669,16 @@ def courses(request):
         enrolled = student.course.all() if student else None
         accessed = Course.objects.filter(
             faculty_id=faculty.faculty_id) if faculty else None
-        
-        if request.method=="POST":
-            dept=request.POST['dept']
-            
-            if dept==0:
-                courses=models.Course.objects.all()
+
+        if request.method == "POST":
+            dept = request.POST['dept']
+
+            if dept == 0:
+                courses = models.Course.objects.all()
             else:
-                deptar=models.Department.objects.filter(department_id=dept).first()
-                courses=models.Course.objects.filter(department=deptar)
+                deptar = models.Department.objects.filter(
+                    department_id=dept).first()
+                courses = models.Course.objects.filter(department=deptar)
             print(courses)
         context = {
             'faculty': faculty,
@@ -666,7 +686,7 @@ def courses(request):
             'student': student,
             'enrolled': enrolled,
             'accessed': accessed,
-            'department':departments
+            'department': departments
         }
 
         return render(request, 'main/all-courses.html', context)
@@ -703,13 +723,12 @@ def departments(request):
 def access(request, code):
     if request.session.get('student_id'):
         course = Course.objects.get(code=code)
-        access_code=''
+        access_code = ''
         student = Student.objects.get(student_id=request.session['student_id'])
-        if request.method=='GET':
-            pay=request.GET.get('paid','')
+        if request.method == 'GET':
+            pay = request.GET.get('paid', '')
             if pay:
-                access_code=str(course.studentKey)
-
+                access_code = str(course.studentKey)
 
         if request.method == 'POST':
             if (request.POST['key']) == str(course.studentKey):
@@ -720,7 +739,7 @@ def access(request, code):
                 messages.error(request, 'Invalid key')
                 return HttpResponseRedirect(request.path_info)
         else:
-            return render(request, 'main/access.html', {'course': course, 'student': student,'access_code':access_code,'pay':pay})
+            return render(request, 'main/access.html', {'course': course, 'student': student, 'access_code': access_code, 'pay': pay})
 
     else:
         return redirect('std_login')
