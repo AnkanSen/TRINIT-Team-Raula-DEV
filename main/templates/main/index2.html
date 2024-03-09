@@ -28,6 +28,13 @@ TemplateMo 557 Grad School
 https://templatemo.com/tm-557-grad-school
 
 -->
+<style>
+  .prof{
+    margin: 5px;
+    height: 45px;
+    width: 45px;
+  }
+</style>
   </head>
 
 <body>
@@ -42,7 +49,12 @@ https://templatemo.com/tm-557-grad-school
     <nav id="menu" class="main-nav" role="navigation">
       <ul class="main-menu">
       
-        <li><a href="#section1">Home</a></li>
+        {% if student%}
+        <li>  <a href="/my" class="external" >Dashboard</a></li>
+          {% endif%}
+          {% if faculty%}
+          <li><a href="/facultyCourses" class="external">Dashboard</a></li>
+          {% endif%}
         <li class="has-submenu"><a href="#section2">About Us</a>
           <ul class="sub-menu">
             <li><a href="#section2">Who we are?</a></li>
@@ -60,7 +72,12 @@ https://templatemo.com/tm-557-grad-school
        
         <!-- <li><a href="#section5">Video</a></li> -->
         <li><a href="#section6">Contact</a></li>
-        <li><a href="https://templatemo.com" class="external">External</a></li>
+        {% if student%}
+      <li>  <a href="/profile/{{student.student_id}}" class="external" ><img class="prof" src="{{student.photo.url}}"></a></li>
+        {% endif%}
+        {% if faculty%}
+        <li><a href="/profile/{{faculty.faculty_id}}" class="external" ><img  class="prof" src="{{faculty.photo.url}}"></a></li>
+        {% endif%}
       </ul>
     </nav>
   </header>
@@ -73,8 +90,8 @@ https://templatemo.com/tm-557-grad-school
 
       <div class="video-overlay header-text">
           <div class="caption">
-              <h6>Graduate School of Management</h6>
-              <h2><em>Your</em> Classroom</h2>
+              <h6>LanguageTutor</h6>
+              <h2><em>Your personal </em>Tutor </h2>
               <div class="main-button">
                   <div class="scroll-to-section"><a href="#section2">Discover more</a></div>
               </div>
@@ -138,7 +155,7 @@ https://templatemo.com/tm-557-grad-school
       <div class="row">
         <div class="col-md-12">
           <div class="section-heading">
-            <h2>Why choose Grad School?</h2>
+            <h2>Why choose us?</h2>
           </div>
         </div>
         <div class="col-md-12">
@@ -156,7 +173,7 @@ https://templatemo.com/tm-557-grad-school
                   </div>
                   <div class="col-md-6">
                     <h4>Best Education</h4>
-                    <p>Grad School is free educational HTML template with Bootstrap 4.5.2 CSS layout. Feel free to use it for educational or commercial purposes. You may want to make <a href="https://paypal.me/templatemo" target="_parent" rel="sponsored">a little donation</a> to TemplateMo. Please tell your friends about us. Thank you.</p>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Autem quae eos, quos id ipsum consequatur quod laboriosam, repellendus tempore, assumenda error corporis! Aliquam ad soluta delectus sit optio qui odit.</p>
                   </div>
                 </div>
               </article>
@@ -167,7 +184,7 @@ https://templatemo.com/tm-557-grad-school
                   </div>
                   <div class="col-md-6">
                     <h4>Top Level</h4>
-                    <p>You can modify this HTML layout by editing contents and adding more pages as you needed. Since this template has options to add dropdown menus, you can put many HTML pages.</p> 
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus eaque fugiat doloremque deleniti ad molestias, placeat magnam, quis inventore quam numquam aspernatur maiores voluptatibus dicta culpa ipsam est cumque natus.</p> 
                     <p>Suspendisse tincidunt, magna ut finibus rutrum, libero dolor euismod odio, nec interdum quam felis non ante.</p>
                   </div>
                 </div>
@@ -179,7 +196,7 @@ https://templatemo.com/tm-557-grad-school
                   </div>
                   <div class="col-md-6">
                     <h4>Quality Meeting</h4>
-                    <p>You are NOT allowed to redistribute this template ZIP file on any template collection website. However, you can use this template to convert into a specific theme for any kind of CMS platform such as WordPress. For more information, you shall <a rel="nofollow" href="https://templatemo.com/contact" target="_parent">contact TemplateMo</a> now.</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis obcaecati odio dolorum blanditiis illo repellat minima fugit quod dolores veritatis nulla maiores doloremque officiis fugiat laboriosam vero asperiores, incidunt eius.</p>
                   </div>
                 </div>
               </article>
@@ -196,8 +213,7 @@ https://templatemo.com/tm-557-grad-school
         <div class="col-md-7 col-xs-12">
           <div class="continer centerIt">
             <div>
-              <h4>Take <em>any online course</em> and win $326 for your next class</h4>
-              <div class="counter">
+               <div class="counter">
 
                 <div class="days">
                   <div class="value">00</div>
@@ -223,37 +239,7 @@ https://templatemo.com/tm-557-grad-school
             </div>
           </div>
         </div>
-        <div class="col-md-5">
-          <div class="right-content">
-            <div class="top-content">
-              <h6>Register your free account and <em>get immediate</em> access to online courses</h6>
-            </div>
-            <form id="contact" action="" method="get">
-              <div class="row">
-                <div class="col-md-12">
-                  <fieldset>
-                    <input name="name" type="text" class="form-control" id="name" placeholder="Your Name" required="">
-                  </fieldset>
-                </div>
-                <div class="col-md-12">
-                  <fieldset>
-                    <input name="email" type="text" class="form-control" id="email" placeholder="Your Email" required="">
-                  </fieldset>
-                </div>
-                <div class="col-md-12">
-                  <fieldset>
-                    <input name="phone-number" type="text" class="form-control" id="phone-number" placeholder="Your Phone Number" required="">
-                  </fieldset>
-                </div>
-                <div class="col-md-12">
-                  <fieldset>
-                    <button type="submit" id="form-submit" class="button">Get it now</button>
-                  </fieldset>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
+      
       </div>
     </div>
   </section>
@@ -298,7 +284,7 @@ https://templatemo.com/tm-557-grad-school
   </section>
   
 
-  <section class="section video" data-section="section5">
+  <!-- <section class="section video" data-section="section5">
     <div class="container">
       <div class="row">
         <div class="col-md-6 align-self-center">
@@ -322,7 +308,7 @@ https://templatemo.com/tm-557-grad-school
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <section class="section contact" data-section="section6">
     <div class="container">
@@ -365,14 +351,14 @@ https://templatemo.com/tm-557-grad-school
         </div>
         <div class="col-md-6">
           <div id="map">
-            <iframe src="https://maps.google.com/maps?q=Av.+L%C3%BAcio+Costa,+Rio+de+Janeiro+-+RJ,+Brazil&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="422px" frameborder="0" style="border:0" allowfullscreen></iframe>
+            <iframe src="https://www.google.com/maps/embed?origin=mfe&pb=!1m3!2m1!1sNIT+Warangal!6i13" width="100%" height="422px" frameborder="0" style="border:0" allowfullscreen></iframe>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <footer>
+  <!-- <footer>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -385,7 +371,7 @@ https://templatemo.com/tm-557-grad-school
         </div>
       </div>
     </div>
-  </footer>
+  </footer> -->
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
