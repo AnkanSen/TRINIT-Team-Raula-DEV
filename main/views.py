@@ -9,7 +9,13 @@ from .forms import AnnouncementForm, AssignmentForm, MaterialForm
 from django import forms
 from django.core import validators
 from . import models
+import requests
 
+from smtplib import SMTP
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import datetime
+from bs4 import BeautifulSoup as bb
 from django import forms
 
 
@@ -68,7 +74,33 @@ def create_class(requests):
             one_course.save()
     return render(requests, 'main/create_class.html')
 
+def connect(request,code):
+    roomno=code
+    curr = datetime.datetime.now()
+    email = "ak21eeb0b08@student.nitw.ac.in"
+    SERVER = "smtp.gmail.com"
+    PORT = 587
+    FROM = "ankitch860@gmail.com"
+    TO = email
+    PASS = 'stcuyuhbivtltoey'
+    msg = MIMEMultipart()
+    msg['subject'] = 'Join the meet '+str(curr.day)+"-"+str(curr.year)
+    msg['From'] = FROM
+    msg['To'] = TO
+    co=f"Join the meet using this link. https:127.0.0.1:8000/connect/{code}2341"
+    msg.attach(MIMEText(co, 'html'))
+    print("Creating mail")
+    server = SMTP(SERVER, PORT)
+    server.set_debuglevel(1)
+    server.ehlo()
+    server.starttls()
+    server.login(FROM, PASS)
+    server.sendmail(FROM, TO, msg.as_string())
+    print('Sending Email')
+    server.quit()9
+    print('Email sent ......')
 
+    return render(request,"main/index.html")
 def book_class(requests):
     context = {
         'student': None,

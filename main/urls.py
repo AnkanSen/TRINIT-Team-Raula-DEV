@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('my/', views.myCourses, name='myCourses'),
     path('videoochat/<str:code>', views.videochat, name='videochat'),
+     path('connect/<str:code>', views.connect, name='connect'),
     path('videochat', views.videoochat, name='videoochat'),
     path('facultyCourses/', views.facultyCourses, name='facultyCourses'),
     path('login/', views.std_login, name='std_login'),

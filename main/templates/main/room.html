@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heyy!!</title>
+    <link rel="stylesheet" type="text/css" href="css/room.css">
+</head>
+<body>
+    <h1>Enter the room no. </h1>
+    <div class = "box">
+    <form id="fo">
+      <input class = "name" type = "text" name="invite" placeholder = "Enter room no." />
+        <button>Submit</button>
+    </form>
+      </div>
+</body>
+
+<script>
+    let form = document.getElementById('fo')
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        let inviteCode = e.target.invite.value
+        window.location = `index.html?room=${inviteCode}` 
+    })
+</script>
+
+</html>
