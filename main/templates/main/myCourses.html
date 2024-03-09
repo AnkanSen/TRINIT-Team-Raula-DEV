@@ -15,66 +15,54 @@
 {% block content %}
 
 <style>
-   .card {
-  position: relative;
-  width: 20rem;
-  height: 20rem;
-  background-color: #000;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  gap: 12px;
-  border-radius: 8px;
+.card {
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-top: 5px solid #ff7aac;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(23, 79, 138, 0.1);
 }
 
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  left: -5px;
-  margin: auto;
-  width: 21rem;
-  height: 21rem;
-  border-radius: 10px;
-  background: linear-gradient(-45deg, #ab9e60 0%, #ab9e60 100%);
-  z-index: -10;
-  pointer-events: none;
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.card_title {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: var(--fw-bold);
 }
 
-.card::after {
-  content: "";
-  z-index: -1;
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(-45deg, #ab9e60 0%, #ab9e60 100%);
-  transform: translate3d(0, 0, 0) scale(0.95);
-  filter: blur(20px);
+.card_content {
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
 }
 
-.heading {
-  font-size: 20px;
-  text-transform: capitalize;
-  font-weight: 700;
+.card_img {
+  margin-left: auto;
+  display: block;
 }
 
-.card p:not(.heading) {
-  font-size: 14px;
+@media (max-width: 768px) {
+  .card_grid {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+    align-items: stretch;
+  }
+
+  .cyan {
+    grid-area: auto;
+  }
+
+  .blue {
+    grid-area: auto;
+  }
+
+  .card {
+    max-width: 300px;
+  }
 }
 
-.card p:last-child {
-  color: #e81cff;
-  font-weight: 600;
-}
-
-.card:hover::after {
-  filter: blur(30px);
-}
-
-.card:hover::before {
-  transform: rotate(-90deg) scaleX(0.77) scaleY(0.77);
+@media screen and (max-width: 500px) {
+  .card_grid {
+    grid-template-columns: repeat(1, minmax(200px, 1fr));
+  }
 }
 </style>
 <div>
@@ -94,16 +82,15 @@
 
             {% for course in courses%}
             <!-- individual card starts -->
-            <div class="card">
-               <div class='heading' style="color: white;">Dept. of {{course.department}}</div>
-                  <p style="font-size: 20px;color: rgb(176, 176, 176);">${{course.studentKey}}</p>
-                  <p style="color: white;">Course Name :- {{course.name}}</p>
-                  <p style="color: white;">Faculty Name :- {{course.faculty}}</p>
-                  <p style="color: #e81cff;">Timing :- {{course.facultyKey}}</p>
+               <section class="card red">
+                  <h2 class="card_title" style="font-weight: 800;font-size:30px;">Dept. of {{course.department}}</h2>
+                  <p class="card_content"style="font-weight: 800;font-size:25px;">${{course.studentKey}}</p>
+                  <p class="card_content"style="font-weight: 600;">Course Name :- {{course.name}}</p>
+                  <p class="card_content"style="font-weight: 600;">Faculty Name :- {{course.faculty}}</p>
+                  <p class="card_content"style="font-weight: 600;">Timing :- {{course.facultyKey}}</p>
                   <a href="{% url 'course' course.code %}" class="btn btn-outline-dark"><span
                      class="px-3">Enter</span></a>
-               </div>
-            </div>
+               </section>
                   <!-- individual card ends -->
                      {% endfor %}
                   </div>
