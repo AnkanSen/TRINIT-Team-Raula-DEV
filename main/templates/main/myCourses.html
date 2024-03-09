@@ -15,46 +15,67 @@
 {% block content %}
 
 <style>
-   .pricing {
-      padding: 0px 0;
-      font-family: 'Roboto', sans-serif;
-      letter-spacing: 0.3px;
-      .package.brilliant {
-         background: #ffffff;
-      }
+   .card {
+  position: relative;
+  width: 20rem;
+  height: 20rem;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  gap: 12px;
+  border-radius: 8px;
+}
 
-      .package {
-         height: 400px;
-         border-radius: 50px;
-         text-align: center;
-         border: 2px solid #c2c652;
-         background: #9ebb20;
-         color: #000000;
-         min-width: 400px;
-         max-width: 400px;
-      }
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: -5px;
+  margin: auto;
+  width: 21rem;
+  height: 21rem;
+  border-radius: 10px;
+  background: linear-gradient(-45deg, #ab9e60 0%, #ab9e60 100%);
+  z-index: -10;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
-      .name {
-         font-size: 24px;
-         margin-top: 20px;
-         font-weight: 600;
-      }
+.card::after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg, #ab9e60 0%, #ab9e60 100%);
+  transform: translate3d(0, 0, 0) scale(0.95);
+  filter: blur(20px);
+}
 
-      .price {
-         margin-top: 10px;
-         font-size: 18px;
-         background: #000000;
-         display: inline-block;
-         padding: 17px 20px;
-         border-radius: 50%;
-         font-weight: 800;
-         color: #6A8347;
-      }
+.heading {
+  font-size: 20px;
+  text-transform: capitalize;
+  font-weight: 700;
+}
 
-      .scheme {
-         margin-top: 5px;
-      }
-   }
+.card p:not(.heading) {
+  font-size: 14px;
+}
+
+.card p:last-child {
+  color: #e81cff;
+  font-weight: 600;
+}
+
+.card:hover::after {
+  filter: blur(30px);
+}
+
+.card:hover::before {
+  transform: rotate(-90deg) scaleX(0.77) scaleY(0.77);
+}
 </style>
 <div>
    <!--navigation links-->
@@ -73,25 +94,17 @@
 
             {% for course in courses%}
             <!-- individual card starts -->
-            <div class="pricing">
-               <div class="container">
-                        <div class='package'>
-                           <div class='name'>Dept. of {{course.department}}</div>
-                           <div class='price'>${{course.studentKey}}</div>
-                           <div class="scheme">/ month / student</div>
-                           <hr>
-                           <p> Course Name :- {{course.name}}
-                           </p>
-                           <p> Faculty Name :- {{course.faculty}}
-                           </p>
-                           <p> Timing :- {{course.facultyKey}}
-                           </p>
-                           <a href="{% url 'course' course.code %}" class="btn btn-outline-dark"><span
-                              class="px-3">Enter</span></a>
-                        </div>
-                     </div>
-                     </div>
-                     <!-- individual card ends -->
+            <div class="card">
+               <div class='heading' style="color: white;">Dept. of {{course.department}}</div>
+                  <p style="font-size: 20px;color: rgb(176, 176, 176);">${{course.studentKey}}</p>
+                  <p style="color: white;">Course Name :- {{course.name}}</p>
+                  <p style="color: white;">Faculty Name :- {{course.faculty}}</p>
+                  <p style="color: #e81cff;">Timing :- {{course.facultyKey}}</p>
+                  <a href="{% url 'course' course.code %}" class="btn btn-outline-dark"><span
+                     class="px-3">Enter</span></a>
+               </div>
+            </div>
+                  <!-- individual card ends -->
                      {% endfor %}
                   </div>
                </div>

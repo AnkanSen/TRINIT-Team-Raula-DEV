@@ -14,6 +14,11 @@
 {% endblock %} 
 {% block content %}
 {% comment %} alert {% endcomment %}
+<style>
+   body{
+      background-color: white !important;
+   }
+</style>
 {% if messages %}
 {% for message in messages %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -14,8 +14,14 @@
 {% endblock %} 
 {% block content %}
 {% comment %} alert {% endcomment %}
+<style>
+   body{
+      background-color: white !important;
+   }
+</style>
 {% if messages %}
 {% for message in messages %}
+
 <div class="alert alert-{% if 'success' in message.tags %}success{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
    <span> {{ message }}</span>
    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
