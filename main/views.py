@@ -53,6 +53,19 @@ def register_student(requests):
 
 
 def create_class(requests):
+    if requests.session.get('faculty_id'):
+        if requests.method=='POST':
+            name=requests.POST['name']
+            id=requests.POST['id']
+            price=requests.POST['price']
+        # dept=requests.POST['dept']
+            time_slot=requests.POST['time_slot']
+            access_code=requests.POST['access_code']
+            time=time_slot.split()
+            faculty=models.Faculty.objects.get(faculty_id=requests.session.get('faculty_id'))
+            departments=models.Department.objects.get(department_id=faculty.department.department_id)
+            one_course=models.OneCourse.objects.create(name=name,code=id,department=departments,faculty=faculty,price=price,access_code=access_code,time=time_slot)
+            one_course.save()
     return render(requests, 'main/create_class.html')
 
 
@@ -65,19 +78,25 @@ def book_class(requests):
         student = models.Student.objects.get(
             student_id=requests.session['student_id'])
         faculty = None
+        one_course=models.OneCourse.objects.all()
+        if requests.method=='POST':
+            time=requests.POST['time']
+            name=requests.POST.get('name','')
+            id=requests.POST['id']
+            student=models.Student.objects.get(student_id=requests.session['student_id'])
+            faculty=models.Faculty.objects.get(faculty_id=name)
+            courses=models.OneCourse.objects.get(code=id)
+            booked=models.BookedClasses.objects.create(student=student,faculty=faculty,time=time,code=id)
+            course=models.Course.objects.create(code=id,faculty=faculty,studentKey=courses.price,facultyKey=time,department=courses.department,name=courses.name)
+            course.save()
+            booked.save()
+            
         context = {
             'student': student,
-            'faculty': faculty
+            'faculty': faculty,
+            'course':one_course
         }
-    if 'faculty_id' in requests.session:
-        facultys = models.Faculty.objects.get(
-            faculty_id=requests.session['faculty_id'])
-        students = None
-        context = {
-            'student': students,
-            'faculty': facultys
-        }
-        return render(requests, 'main/book_class.html', context)
+
     return render(requests, 'main/book_class.html', context)
 
 
@@ -206,10 +225,13 @@ def myCourses(request):
         student = Student.objects.get(
             student_id=request.session['student_id'])
         courses = student.course.all()
+        one_courses=models.BookedClasses.objects.filter(student=student)
+        # print(one_courses)
         faculty = student.course.all().values_list('faculty_id', flat=True)
         departments = models.Department.objects.all()
         context = {
             'courses': courses,
+            'booked':one_courses,
             'student': student,
             'faculty': faculty,
             'department': departments
@@ -658,6 +680,17 @@ def courses(request):
         if request.session.get('student_id'):
             student = Student.objects.get(
                 student_id=request.session['student_id'])
+            course = models.Course.objects.all()
+            oneonone=models.BookedClasses.objects.filter(student=student)
+            codes=[]
+            for j in oneonone:
+                codes.append(j.code)
+            print(codes)
+            courses=[]
+            for i in course:
+                if i.code in codes:
+                    courses.append(i)
+            print(courses)
         else:
             student = None
         if request.session.get('faculty_id'):
@@ -679,7 +712,8 @@ def courses(request):
                 deptar = models.Department.objects.filter(
                     department_id=dept).first()
                 courses = models.Course.objects.filter(department=deptar)
-            print(courses)
+                course=[]
+                print(courses)
         context = {
             'faculty': faculty,
             'courses': courses,

@@ -80,12 +80,44 @@ class Course(models.Model):
         Department, on_delete=models.CASCADE, null=False, related_name='courses')
     faculty = models.ForeignKey(
         Faculty, on_delete=models.SET_NULL, null=True, blank=True)
-    studentKey = models.IntegerField(null=False, unique=True)
+    studentKey = models.IntegerField(null=False)
     facultyKey = models.TextField(max_length=1000,default="")
 
     class Meta:
         unique_together = ('code', 'department', 'name')
         verbose_name_plural = "Courses"
+
+    def __str__(self):
+        return self.name
+    
+
+class BookedClasses(models.Model):
+    course=models.ForeignKey(
+        Course, on_delete=models.CASCADE, null=True, blank=True,related_name="booked")
+    student=models.ForeignKey(
+        Student, on_delete=models.CASCADE, null=True, blank=True,related_name="booked")
+    faculty = models.ForeignKey(
+        Faculty, on_delete=models.CASCADE, null=True, blank=True,related_name="booked")
+    time=models.CharField(max_length=255)
+    code=models.CharField(max_length=255,default="")
+
+
+class OneCourse(models.Model):
+    course=models.ForeignKey(
+        Course, on_delete=models.CASCADE, null=True, blank=True,related_name="onecourses")
+    code = models.CharField(max_length=255,primary_key=True)
+    name = models.CharField(max_length=255, null=False, unique=True)
+    department = models.ForeignKey(
+        Department, on_delete=models.CASCADE, null=False, related_name='onecourses')
+    faculty = models.ForeignKey(
+        Faculty, on_delete=models.SET_NULL, null=True, blank=True)
+    price = models.IntegerField(null=False, unique=True)
+    access_code = models.TextField(max_length=1000,default="")
+    time=models.TextField(max_length=1000,default="")
+
+    class Meta:
+        unique_together = ('code', 'department', 'name')
+        verbose_name_plural = "OneCourses"
 
     def __str__(self):
         return self.name
