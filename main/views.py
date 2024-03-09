@@ -10,7 +10,8 @@ from django import forms
 from django.core import validators
 from . import models
 import requests
-
+from .utils import send_code
+import uuid
 from smtplib import SMTP
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -78,13 +79,46 @@ def register_student(requests):
         name = requests.POST['name']
         password = requests.POST.get('password', '')
         email = requests.POST['email']
+        code: str = send_code(email=email)
+        token=uuid.uuid4()
         # department=models.Department.objects.get(department_id=0)
         student = models.Student.objects.create(
-            student_id=username, name=name, password=password, email=email)
+            student_id=username, name=name, password=password, email=email,stucode=code,stutoken=token)
         student.save()
-        return redirect('/login')
+        return render(requests,'main/validate.html',{"token":token})
     return render(requests, 'register_student.html')
-
+def validatestudent(request,token):
+    if request.method=='POST':
+        code: str = request.POST.get('code')
+        student=Student.objects.get(stutoken=token)
+        if student.stuis_active==True:
+            messages.info(request,"Account already verified.Kindly login")
+            return redirect('/login')
+        if code==student.stucode:
+            student.stuis_active=True
+            messages.info(request,"Account  verified Successfully.Kindly login")
+            return redirect('/login')
+        else:
+            messages.info(request,"Wrong code")
+            return redirect(f'/validatestudent/{token}')
+    else:
+        return render(request,'main/validate.html',{"token":token})
+def validatefaculty(request,token):
+    if request.method=='POST':
+        code: str = request.POST.get('code')
+        student=Faculty.objects.get(factoken=token)
+        if student.facis_active==True:
+            messages.info(request,"Account already verified.Kindly login")
+            return redirect('/login')
+        if code==student.faccode:
+            student.stuis_active=True
+            messages.info(request,"Account  verified Successfully.Kindly login")
+            return redirect('/login')
+        else:
+            messages.info(request,"Wrong code")
+            return redirect(f'/validatefaculty/{token}')
+    else:
+        return render(request,'main/validate2.html',{"token":token})
 
 def create_class(requests):
     if requests.session.get('faculty_id'):
@@ -167,12 +201,13 @@ def register_faculty(requests):
         password = requests.POST.get('password', '')
         email = requests.POST['email']
         departments = requests.POST.get('department', '')
-        print(departments)
+        code: str = send_code(email=email)
+        token=uuid.uuid4()
         sdep = models.Department.objects.get(department_id=departments)
         faculty = models.Faculty.objects.create(
-            faculty_id=username, name=name, password=password, email=email, department=sdep)
+            faculty_id=username, name=name, password=password, email=email, department=sdep,faccode=code,factoken=token)
         faculty.save()
-        return redirect('/login')
+        return render(requests,'main/validate2.html',{"token":token})
     return render(requests, 'register_faculty.html', {'department': department})
 
 

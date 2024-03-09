@@ -2,7 +2,7 @@ from django.db import models
 from froala_editor.fields import FroalaField
 # Create your models here.
 
-
+import uuid
 class Student(models.Model):
     student_id = models.CharField(max_length=255,default="",primary_key=True)
     name = models.CharField(max_length=100, null=False)
@@ -14,6 +14,9 @@ class Student(models.Model):
         'Course', related_name='students', blank=True)
     photo = models.ImageField(upload_to='profile_pics', blank=True,
                               null=False, default='profile_pics/default_student.png')
+    stucode = models.CharField(max_length=6)
+    stutoken = models.UUIDField(default=uuid.uuid4())
+    stuis_active = models.BooleanField(default=False)
 
     def delete(self, *args, **kwargs):
         if self.photo != 'profile_pics/default_student.png':
@@ -28,6 +31,10 @@ class Student(models.Model):
 
 
 class Faculty(models.Model):
+    faccode = models.CharField(max_length=6)
+    factoken = models.UUIDField(default=uuid.uuid4())
+    facis_active = models.BooleanField(default=False)
+
     faculty_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100, null=False)
     email = models.EmailField(max_length=100, null=True, blank=True)

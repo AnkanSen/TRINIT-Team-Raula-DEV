@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Confirmation</title>
+    <style>
+.code{
+    height: 100px;
+    width: 400px;
+    font-size: 50px;
+    border: 1px solid black;
+
+}
+.form{
+    display: flex;
+    justify-content: center;
+}
+.op{
+    height: 40px;
+    width: 100px;
+    background-color: rgb(98, 98, 236);
+    color:white;
+}
+.op:hover{
+    background-color: rgb(52, 52, 233);
+}
+
+    </style>
+</head>
+<body>
+{% if message != "Success" %}
+<div class="form">
+    <form method="POST" action="/validatestudent/{{token}}">
+        {% csrf_token %}
+        <input class="code"placeholder="Code" style="height: 30px; width: 300px;" type="number" name="code">
+        <input class="op"type="submit" value="Verify">
+    </form>
+    </div>
+{% endif %}
+{% for mesg in messages%}
+<h1><script>alert("{{mesg}}")</script></h1>
+{%endfor%}
+<a href="/login">Back to login</a>
+</body>
+<script>
+    document.cookie = 'token=' + "{{ token }}" + ';domain=;path=/'
+</script>
+</html>
