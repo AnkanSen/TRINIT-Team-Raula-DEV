@@ -77,6 +77,17 @@
                            data-bs-placement="bottom" title="Log out">Create a 1 on 1 class</a>
                      </li>
                      {% endif %}
+                     <!-- {% if student %}
+                     <li class="nav-item">
+                        <a class="nav-link active fw-bold search_button" href="/connect_with_linguistic_experts" data-bs-toggle="tooltip"
+                           data-bs-placement="bottom" title="Connect">Connect with linguistic experts </a>
+                     </li>
+                     {% else %}
+                     <li class="nav-item">
+                        <a class="nav-link active fw-bold search_button" href="{% url 'create_class' %}" data-bs-toggle="tooltip"
+                           data-bs-placement="bottom" title="Log out">Create a 1 on 1 class</a>
+                     </li>
+                     {% endif %} -->
                   </ul>
                   <form class="d-flex" action=" {% url 'search' %}" method="GET">
                      <input id="searchIn" style=" border-top-left-radius: 50px;border-bottom-left-radius: 50px;border-top-right-radius: 50px;border-bottom-right-radius: 50px;" class="form-control me-2 searchbar" type="search" placeholder="Search courses" aria-label="Search"

@@ -1,0 +1,41 @@
+h1 {
+  text-align: center;
+  padding-top: 100px;
+  font-family: arial;
+  font-size: 20px;
+}
+.box {
+  display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+}
+
+form {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  width:80%;
+  height: 30%;
+    background-color: #eee;
+  padding: 20px;
+    border-radius: 5px;
+}
+
+input {
+  width:90%;
+  border-radius: 5px;
+  border: 1px solid #999;
+  padding: 10px;
+}
+
+
+
+button {
+  flex: 1 0 40px;
+  background-color: blue;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+}
