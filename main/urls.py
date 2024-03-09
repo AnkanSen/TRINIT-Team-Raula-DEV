@@ -53,5 +53,7 @@ urlpatterns = [
     path('register_faculty',views.register_faculty,name='register_faculty'),
     path('login_student',views.login_student,name='login_student'),
     path('login_faculty',views.login_faculty,name='login_faculty'),
-    path('add_courses',views.add_courses,name='add_courses')
+    path('add_courses',views.add_courses,name='add_courses'),
+    path('create_class',views.create_class,name='create_class'),
+    path('book_class',views.book_class,name='book_class'),
 ]

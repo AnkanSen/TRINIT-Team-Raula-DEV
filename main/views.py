@@ -51,6 +51,31 @@ def register_student(requests):
     return render(requests,'register_student.html')
 
 
+def create_class(requests):
+    return render(requests,'main/create_class.html')
+
+def book_class(requests):
+    context={
+        'student':None,
+        'faculty':None
+    }
+    if 'student_id' in requests.session:
+        student=models.Student.objects.get(student_id=requests.session['student_id'])
+        faculty=None
+        context={
+            'student':student,
+            'faculty':faculty
+        }
+    if 'faculty_id' in requests.session:
+        facultys=models.Faculty.objects.get(faculty_id=requests.session['faculty_id'])
+        students=None
+        context={
+            'student':students,
+            'faculty':facultys
+        }
+        return render(requests,'main/book_class.html',context)
+    return render(requests,'main/book_class.html',context)
+
 def register_faculty(requests):
     department=models.Department.objects.all()
     if requests.method=='POST':
@@ -628,8 +653,12 @@ def courses(request):
         
         if request.method=="POST":
             dept=request.POST['dept']
-            deptar=models.Department.objects.filter(department_id=dept).first()
-            courses=models.Course.objects.filter(department=deptar)
+            
+            if dept==0:
+                courses=models.Course.objects.all()
+            else:
+                deptar=models.Department.objects.filter(department_id=dept).first()
+                courses=models.Course.objects.filter(department=deptar)
             print(courses)
         context = {
             'faculty': faculty,
@@ -674,7 +703,14 @@ def departments(request):
 def access(request, code):
     if request.session.get('student_id'):
         course = Course.objects.get(code=code)
+        access_code=''
         student = Student.objects.get(student_id=request.session['student_id'])
+        if request.method=='GET':
+            pay=request.GET.get('paid','')
+            if pay:
+                access_code=str(course.studentKey)
+
+
         if request.method == 'POST':
             if (request.POST['key']) == str(course.studentKey):
                 student.course.add(course)
@@ -684,7 +720,7 @@ def access(request, code):
                 messages.error(request, 'Invalid key')
                 return HttpResponseRedirect(request.path_info)
         else:
-            return render(request, 'main/access.html', {'course': course, 'student': student})
+            return render(request, 'main/access.html', {'course': course, 'student': student,'access_code':access_code,'pay':pay})
 
     else:
         return redirect('std_login')
