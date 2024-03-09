@@ -88,11 +88,11 @@
    }
 
    .inner {
-      padding: 20px;
       background: #fff;
-      max-width: 850px;
+      max-width: 600px;
       margin: auto;
       display: flex;
+      height: 400px;
    }
 
    .inner .image-holder {
@@ -119,7 +119,7 @@
    }
 
    .form-group input {
-      width: 50%;
+      width: 100%;
    }
 
    .form-group input:first-child {
@@ -329,7 +329,7 @@
    <div class="wrapper" style="background-image: url('');">
       <div class="inner">
          <div class="image-holder">
-            <img src={% static 'images\registration-form-1.jpg' %} alt="">
+            <img style="height: 100%;" src={% static 'images\form_image.jpg' %}  alt="">
          </div>
          <form method="POST" class="register-form" id="login-form">
             {% csrf_token %}
@@ -343,16 +343,10 @@
                <label for="{{ form.password.id_for_label }}"><span class="material-symbols-outlined" style="vertical-align:text-bottom">lock</span></label>
                {{ form.password }}
             </div>
-            <button type="submit">Register
+            <button style="background-color: #ff7aac;color: black;font-size: large;font-weight: 800;" type="submit">Register
                <i class="zmdi zmdi-arrow-right"></i>
             </button>
          </form>
-         <div class="">
-            <a href="/register_student" target="_blank">Register as Student</a>
-         </div>
-         <div class="">
-            <a href="/register_faculty" target="_blank">Register as Faculty</a>
-         </div>
       </div>
       
    </div>
