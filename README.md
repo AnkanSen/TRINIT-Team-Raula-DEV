@@ -1,5 +1,20 @@
 
 # PS-DEV-02
+Welcome to our language tutor app, where learning is not just about studying, but an exciting journey filled with amazing features to empower your language skills!
+
+🔐 OTP Verification: Start your learning adventure securely with OTP verification, ensuring a safe and personalized experience.
+
+🌟 Variety of Courses: Explore a diverse range of courses offered by our talented tutors, tailored to suit your learning needs and preferences.
+
+🎥 Interactive Online Classes: Immerse yourself in interactive online classes with video and voice chat, bringing the classroom experience right to your screen.
+
+🗣️ 1-to-1 Video Calls with Native Speakers: Connect with native speakers for personalized 1-to-1 video calls, perfect for practicing conversation and mastering pronunciation.
+
+📝 Engaging Assignments: Dive into thoughtfully designed assignments that challenge and inspire, making learning both fun and effective.
+
+📚 Quizzes with Feedback: Test your knowledge with quizzes and receive instant evaluation, allowing you to track your progress and focus on areas that need improvement.
+
+💬 Live Discussions: Engage in lively discussions with fellow learners and tutors in real-time, fostering a dynamic learning community.
 ![Screenshot 2024-03-10 084344](https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96538620/39d020e7-2a2f-4b97-8738-77d12f76c88a)
 
 
