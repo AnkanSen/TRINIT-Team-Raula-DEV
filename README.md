@@ -20,6 +20,5 @@ Accessed student get benefits like talking to native speaker in a one on one vid
 
 
 
-https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96538620/211cc879-13a5-4a5b-ae30-c74eb934e3b6
-
+https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96538620/9b3b7442-8ec0-479c-b43c-201c8f8a6d56
 
