@@ -14,7 +14,7 @@ class Student(models.Model):
         'Course', related_name='students', blank=True)
     photo = models.ImageField(upload_to='profile_pics', blank=True,
                               null=False, default='profile_pics/default_student.png')
-    stucode = models.CharField(max_length=6)
+    stucode = models.CharField(max_length=6,default="")
     stutoken = models.UUIDField(default=uuid.uuid4())
     stuis_active = models.BooleanField(default=False)
 
@@ -31,7 +31,7 @@ class Student(models.Model):
 
 
 class Faculty(models.Model):
-    faccode = models.CharField(max_length=6)
+    faccode = models.CharField(max_length=6,default="")
     factoken = models.UUIDField(default=uuid.uuid4())
     facis_active = models.BooleanField(default=False)
 
