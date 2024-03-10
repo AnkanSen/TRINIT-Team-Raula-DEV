@@ -27,8 +27,7 @@ Welcome to our language tutor app, where learning is not just about studying, bu
 
 This is a platform for making connection between Tutor and Student
 ![Screenshot 2024-03-10 084502](https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96538620/1911ba95-aca1-411e-a0bd-04cc23aa5574)
-Connect with expert speakers to practice on a 1 v 1 video call 
-![image](https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96883697/6262180a-290f-4472-b28f-78839c03267b)
+Connect with expert speakers to practice on a 1 v 1 video call ![image](https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96883697/0d7a08f1-b6bc-40d7-910c-027f683c0c32)
 
 Live classe with tutor in a video with chat window and screen sharing option
 ![image](https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96883697/26d3f103-319e-4abd-b222-6b123bddd03b)
