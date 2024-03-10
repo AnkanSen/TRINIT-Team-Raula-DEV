@@ -15,6 +15,7 @@ Welcome to our language tutor app, where learning is not just about studying, bu
 📚 Quizzes with Feedback: Test your knowledge with quizzes and receive instant evaluation, allowing you to track your progress and focus on areas that need improvement.
 
 💬 Live Discussions: Engage in lively discussions with fellow learners and tutors in real-time, fostering a dynamic learning community.
+![image](https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96883697/3fe5b047-b73d-4627-ba11-4af64c1d5d70)
 
 ![Screenshot 2024-03-10 084344](https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96538620/39d020e7-2a2f-4b97-8738-77d12f76c88a)
 ![image](https://github.com/AnkanSen/TRINIT-Team-Raula-DEV/assets/96883697/9b061028-0139-46c9-a4b4-53a2a9cd93b9)
